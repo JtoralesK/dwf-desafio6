@@ -1,4 +1,7 @@
 {"compilerOptions": {
     "target": "ESNEXT",
-    "moduleResolution": "node"
+    "moduleResolution": "node",
+    "resolveJsonModule":true,
+    "allowSyntheticDefaultImports":true
+
 }}
