@@ -1,0 +1,93 @@
+.container__home {
+  width: 100%;
+  height: 80vh;
+}
+.container__content__home {
+  width: 325px;
+  margin: 0 auto;
+}
+.title__home {
+  margin: 0;
+  text-align: left;
+  padding-top: 40px;
+  font-size: 80px;
+  color: #009048;
+  padding-right: 0px;
+  font-family: "Arvo", serif;
+}
+.container__manos {
+  display: flex;
+  width: 100%;
+  position: fixed;
+  bottom: 0;
+  justify-content: center;
+  left: 0;
+}
+.manos {
+  margin: 0 15px;
+}
+.pc {
+  display: flex;
+  width: 100%;
+  height: 250px;
+  position: fixed;
+  top: 0;
+  justify-content: center;
+  left: 0;
+  right: 0;
+}
+.page-results-perdistee {
+  background-color: rgba(128, 3, 3, 0.4);
+  height: 100vh;
+  padding-top: 20px;
+}
+.page-results-empate {
+  background-color: rgba(251, 134, 0, 0.5);
+  padding-top: 20px;
+  height: 100vh;
+}
+
+.page-results-ganaste {
+  background-color: rgba(187, 255, 0, 0.5);
+  height: 100vh;
+  padding-top: 20px;
+}
+.container__results {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.results-jugadas {
+  width: 259px;
+  height: 217px;
+  border: solid 10px black;
+  background-color: white;
+  font-family: "Odibee Sans", cursive;
+}
+.score {
+  text-align: center;
+  font-size: 55px;
+  margin: 0;
+}
+.puntajeVos,
+.puntajeMaquina,
+.puntajeEmpate {
+  text-align: right;
+  font-size: 30px;
+  font-weight: bold;
+  margin: 0;
+  color:red
+}
+.puntajeVos::before {
+  content: "Player:";
+  color:black;
+}
+.puntajeMaquina::before {
+  content: "Maquina:";
+  color:black;
+}
+.puntajeEmpate::before {
+  content: "Empate:";
+  color:black;
+}
