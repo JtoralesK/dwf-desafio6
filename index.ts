@@ -61,12 +61,20 @@ app.post("/rooms", (req, res) => {
   userCollection.doc(userId.toString()).get().then(snap=>{
     if(snap.exists){
      roomRef.set({
-      messages:[],
-      jugadas:[],
-      owner:userId
+      owner:userId,
+      player1:{
+        name:"",
+        connection:"",
+
+      },
+      player2:{
+        name:"",
+        connection:"",
+
+      }
     }).then(respuesta=>{
      const lognId=roomRef.key
-   const shortID = Math.floor(1000+Math.random() * 999)
+   const shortID = Math.floor(10000+Math.random() * 9999)
    roomsCollection.doc(shortID.toString()).set({
        rtdbID:lognId
      }).then(()=>{
@@ -107,6 +115,26 @@ app.post("/rooms", (req, res) => {
   })
  
 })
+app.post('/realtime/:id', (req, res) => {
+  const {id}= req.params
+  
+ const roomRef = rtdb.ref("/rooms/"+id+"/player1")
+ roomRef.update(req.body,function(err){
+  console.log(err);
+   
+  res.json("okkkk")})
+ 
+  })
+  app.post('/realtime/ingreso/:id', (req, res) => {
+    const {id}= req.params
+    
+   const roomRef = rtdb.ref("/rooms/"+id+"/player2")
+   roomRef.update(req.body,function(err){
+    console.log(err);
+     
+    res.json("okkkk")})
+   
+    })
 
 
 

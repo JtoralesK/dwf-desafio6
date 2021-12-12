@@ -3,9 +3,10 @@
 }
 
 body {
- 
+  background-image: url("fondo.a4bb620a.png");
   margin: 0;
-  background-color: azure;
+  background-color: rgba(7, 97, 91, 0.185);
 }
+
 
 /*# sourceMappingURL=index.5747eb11.css.map */

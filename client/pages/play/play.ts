@@ -1,14 +1,23 @@
-import { cargarSegundo } from "../../components/temporizador/tempo";
 import {state}from"../../state"
-import { move } from "../move/move";
+import {Router} from"@vaadin/router"
+import { cargarSegundo } from "../../components/temporizador/tempo";
 
- export function play(parametros:any){
-   
-    const div = document.createElement("div");
-    var reloj = cargarSegundo({ seConcretaJugada: seConcretaJugada})
-  
-    div.innerHTML=`
-    <div class="container__home">
+ class Play extends HTMLElement{
+     connectedCallback(){
+     this.render()
+    
+     
+    }
+ 
+ 
+    render(){
+      const reloj = cargarSegundo({ seConcretaJugada: seConcretaJugada})
+    
+    
+        const style = document.createElement("style")
+ 
+       this.innerHTML=`
+       <div class="container__home">
       <div class="container__content__home">
       <div class="container__manos container__play">
       <div class="hijo">
@@ -22,17 +31,22 @@ import { move } from "../move/move";
      </div>
       </div>  
      </div>
-    `
-    const container = div.querySelector(".container__content__home");
-    container.appendChild(reloj)
-   
-    const tijera:HTMLElement = div.querySelector(".buttonTijera");
-    const piedra:HTMLElement = div.querySelector(".buttonPiedra");
-    const papel:HTMLElement = div.querySelector(".buttonPapel");
+      
+       `
+       const container = this.querySelector(".container__content__home");
+       container.appendChild(reloj)
 
-    const tijeraa:HTMLElement = div.querySelector(".p");
-    const piedraa:HTMLElement = div.querySelector(".o");
-    const papeel:HTMLElement = div.querySelector(".i");
+
+
+
+       
+    const tijera:HTMLElement = this.querySelector(".buttonTijera");
+    const piedra:HTMLElement = this.querySelector(".buttonPiedra");
+    const papel:HTMLElement = this.querySelector(".buttonPapel");
+
+    const tijeraa:HTMLElement = this.querySelector(".p");
+    const piedraa:HTMLElement = this.querySelector(".o");
+    const papeel:HTMLElement = this.querySelector(".i");
 
     tijeraa.style.display="none"
     papeel.style.display="none"
@@ -69,20 +83,47 @@ import { move } from "../move/move";
         }
         state.setMove("userMove",moveCpu[0]);
    })})
-  
-    function seConcretaJugada(params){
+     style.innerHTML=`
+         
+    .container__home {
+      width: 100%;
+      height: 80vh;
+    }
+    .container__content__home {
+      width: 325px;
+      margin: 0 auto;
+    }
+    
+    .container__manos {
+      display: flex;
+      width: 100%;
+      position: fixed;
+      bottom: 0;
+      justify-content: center;
+      left: 0;
+    }
+    .manos {
+      margin: 0 15px;
+    }
+    
+     
+     `
+     function seConcretaJugada(params){
       if(params==1){
-       const container:HTMLElement = div.querySelector(".hijo")
         
       
         
         setTimeout(()=>{
-          parametros.goTo("/desafio-final-dwf-5/move")
+          console.log("gholas");
+          
+          Router.go("/move")
         },1000)
         
       }
       }
-   return div;
+    
+     this.appendChild(style)
+    }
+  
  }
-
-   
+ customElements.define("play-el",Play)

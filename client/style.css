@@ -3,7 +3,8 @@
 }
 
 body {
- 
+  background-image: url("../img/fondo.png");
   margin: 0;
-  background-color: azure;
+  background-color: rgba(7, 97, 91, 0.185);
 }
+

@@ -92,41 +92,4 @@
   color:black;
 }
 
-.segundos-div{
-  font-size: 80px;
-  font-family: "Odibee Sans", cursive;
-}
-.segundos-div{
-  width: 250px;
-  height: 250px;
-  border: solid 25px rgb(214, 13, 13);
-  border-radius: 50%;
-  border-left-color: rgba(0, 0, 0, 0.3);
-  border-bottom-color: rgba(0, 0, 0, 0.3);
-  border-top-color: rgba(0, 0, 0, 0.3);
-  animation: spin 1s linear infinite;
-
-  flex-grow: 1;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-@keyframes spin {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
-}
-  .cont__temporizador {
-   
-    display: flex;
-    justify-content: center;
-   margin-top:50px;
-    
-  
-  }
-
 /*# sourceMappingURL=index.38a1b530.css.map */
