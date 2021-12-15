@@ -8,6 +8,8 @@ router.setRoutes([
   {path: '/move', component: 'move-el'},
   {path: '/signup', component: 'signup-el'},
   {path: '/room', component: 'room-el'},
-  {path: '/wait', component: 'wait-el'}
+  {path: '/wait', component: 'wait-el'},
+  {path: '/results', component: 'results-el'}
+
 
 ]);

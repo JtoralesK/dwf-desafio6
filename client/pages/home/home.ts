@@ -4,6 +4,7 @@
  class Home extends HTMLElement{
      connectedCallback(){
      this.render()
+
      const button1:HTMLElement = document.querySelector(".button_home_newGame")
      const button2:HTMLElement = document.querySelector(".button_home_ingresoSala")
      const button3:HTMLElement = document.querySelector(".button_home_ingreso")
@@ -17,7 +18,6 @@
         
      })
      button2.addEventListener("click",()=>{
-       console.log("hola soy button2");
        button1.style.display="none"
        button2.style.display="none"
        button3.style.display="initial"
@@ -31,8 +31,16 @@
        state.setRoom(name)
        Router.go("/signup")
      })
-    
-    
+    const cs = state.getState()
+
+    if(cs.player1.name && cs.player2.name){
+      setTimeout(() => {
+        Router.go("/instrucciones")
+       }, 2000);
+     
+              
+     
+    }
     }
  
  

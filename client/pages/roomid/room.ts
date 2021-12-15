@@ -19,13 +19,7 @@ class Room extends HTMLElement{
      
      this.room=room   
      this.render()
-     state.subscribe(()=>{
-      const cs =state.getState()
-      const secondName = cs.player2.name
-      this.player2=secondName
-      this.render()
-
-     })
+     
     }
    render(){
    

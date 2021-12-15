@@ -4,22 +4,34 @@ import {state}from"../../state"
 
  class Instru extends HTMLElement{
      connectedCallback(){
+      const date = new Date()
+      const hora = date.toString().slice(16,21)
+       console.log("hola soy instrucciones",hora);
+       
      this.render()
      const button = document.querySelector(".button__jugar")
      button.addEventListener("click",(res)=>{
-      
-        const cs = state.getState()
-        console.log(cs.player1.iam);
-        
+        const cs = state.getState()        
         if(cs.player1.iam=="online"){
-          Router.go("/wait")
+          console.log("soy player online1");
           
-        }else if(cs.player1.iam=="local"){
           const date = new Date()
-          const hora = date.toString()
+          const hora = date.toString().slice(16,18)
+          state.setPlayersOnline(hora,()=>{            
+            state.pushDataOtroJugador()
+          
+            
+            Router.go("/wait")
+          })
+
+        }else if(cs.player1.iam=="local"){
+          console.log("soy player local1");
+
+          const date = new Date()
+          const hora = date.toString().slice(16,18)
           state.setPlayersOnline(hora,()=>{
+
             state.pushDataCreadorPartida()
-            state.listenToRoom()
             Router.go("/wait")
           })
 

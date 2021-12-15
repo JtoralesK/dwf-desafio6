@@ -2,34 +2,56 @@ import {Router} from"@vaadin/router"
 import {state} from"../../state"
 type Rooms = string 
 type Names =string
-
+type Ready = string
 
 class Wait extends HTMLElement{
   room:Rooms=""
-  player1:Names[]=[]
+  go:Ready
+  player1Name:""
+  player2Name:""
+  player1Connection:""
+  player2Connection:""
+
+
     connectedCallback(){
-    this.render()
-     const cs =state.getState()
+      const cs =state.getState()      
+
      const firstName = cs.player1.name
      const room = cs.roomId
      this.room=room    
 
-     this.player1=firstName
-     this.render()
-     const player1=cs.player1.connection
-     const player2=cs.player2.connection
-     const hora = player1.toString().slice(16,18)
-     const comienzoJuego= cs.playBeggining
-     console.log(hora,comienzoJuego);
+     this.player1Name=firstName
      
-     if(player1==comienzoJuego && player1==comienzoJuego){
-       console.log("hola");
-       
-     }
+     this.render()
+  
+    
+      state.subscribe(()=>{
+        console.log("suscribe pag waiting");
+        const cs =state.getState()      
+        console.log(cs.player1.connection,cs.player2.connection);
+        
+        this.player1Connection=cs.player1.connection
+        this.player2Connection=cs.player2.connection
 
+        this.render()
+      })
+     
 
     }
    render(){
+     const cs = state.getState()
+     const juegoStart= cs.playBeggining
+
+     if(juegoStart==this.player1Connection && this.player2Connection==juegoStart){
+          
+      state.setPlayerRename()
+     console.log("entre");
+      
+      this.player1Connection=""
+      this.player2Connection=""
+
+      Router.go("/play")
+    }
    
        const style = document.createElement("style")
 
@@ -39,7 +61,7 @@ class Wait extends HTMLElement{
              
          <div class="header">
         <div class="marcador">
-        <p class="userLocal p-header">${this.player1}:0</p>
+        <p class="userLocal p-header">${this.player1Name}:0</p>
         <p class="userOnline  p-header">Rosa:0</p>
 
         </div>

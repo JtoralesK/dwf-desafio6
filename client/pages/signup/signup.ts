@@ -32,14 +32,8 @@ class Signup extends HTMLElement{
         state.signUp(()=>{
           console.log(name,"se ha registrado");
           state.connectRtdb(()=>{
-            "se ha conectado a la Realtime Data Base "
-            const date = new Date()
-            const hora = date.toString()
             state.IdentificadorPlater("online",()=>{
-              state.setPlayersOnline(hora,()=>{
-                state.pushDataOtroJugador()
-                state.listenToRoom()
-              })
+               
               Router.go("/room")
             })
             })

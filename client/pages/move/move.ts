@@ -3,10 +3,8 @@ import {Router} from"@vaadin/router"
 
  class Move extends HTMLElement{
      connectedCallback(){
-      state.subscribe(()=>{
-        let data =state.getState().currentGame
-       })
      this.render()
+     
     }
  
  
@@ -49,79 +47,45 @@ import {Router} from"@vaadin/router"
      
       
   
-    function cpu(){
-      const selectRandomMove= Math.ceil(Math.random() * 3);
-      let moveCpu=[]
+    function movePlater2(){
       
-      
-      if(selectRandomMove==1){
+      const cs = state.getState()
+      const move = cs.player2.move      
+      if(move=="tijera"){
           tijeraa.style.display="initial";
-         moveCpu.push("tijera")
       }
-      if(selectRandomMove==2){
+      if(move=="papel"){
           papeel.style.display="initial";
-            moveCpu.push("papel")
       }
-      if(selectRandomMove==3){
+      if(move=="piedra"){
          piedraa.style.display="initial";
-          moveCpu.push("piedra")
       }
      
      
-      state.setMove("computerMove",moveCpu[0]);
      
      
     }
-  
-  
-     function random(){
-      const selectRandomMove= Math.ceil(Math.random() * 3);
-      if(selectRandomMove==1){
-        tijera.style.display="initial"
-        return "tijera"
-      }
-      if(selectRandomMove==2){
-           papel.style.display="initial"
-           return "papel"
-      }
-      if(selectRandomMove==3){
-         piedra.style.display="initial"
-          return "piedra"
-      }
      
-     }
-      function elige(){
-          const container:HTMLElement = this.querySelector(".hijo")
-          const data=state.getCurrentGame().userMove
-          let moveCpu=[]
+      function movePlater1(){
+          const data=state.getState().player1.move
           if("tijera"==data){
               tijera.style.display="initial"
-              moveCpu.push("tijera")
           }
           if("papel"==data){
                papel.style.display="initial"
-               moveCpu.push("papel")
           }
           if("piedra"==data){
               piedra.style.display="initial"
-              moveCpu.push("piedra")
           }
-         else if("none"==data){
-          moveCpu.push(random())
-          
-         }
-         state.setMove("userMove",moveCpu[0]);
-        setTimeout(() => {
-          Router.go("/") }, 2000);
-         cpu()
+       
+         
           
          }
    
-         elige()
+         movePlater1()
+         movePlater2()
     
-        const style = document.createElement("style")
- 
-    
+    const style = document.createElement("style")
 
      style.innerHTML=`
          
@@ -150,6 +114,12 @@ import {Router} from"@vaadin/router"
      `
    
      this.appendChild(style)
+     function main(){
+      setTimeout(() => {
+        Router.go("/results")
+       }, 2000);
+     }
+     main()
     }
   
  }

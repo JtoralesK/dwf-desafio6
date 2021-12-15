@@ -65,11 +65,14 @@ app.post("/rooms", (req, res) => {
       player1:{
         name:"",
         connection:"",
+        move:""
 
       },
       player2:{
         name:"",
         connection:"",
+        move:""
+
 
       }
     }).then(respuesta=>{

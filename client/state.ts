@@ -1,6 +1,5 @@
 type Move = "piedra" | "papel" | "tijera";
 type Player = "online" | "local";
-type Wins = "userWins" |"computerWins"|"empate"
 
 type Connection = "online"|"offline"
 import { getDatabase, ref, onValue } from "firebase/database";
@@ -17,18 +16,20 @@ const state = {
         userId:"",
         rtdbId:"",
         connection:"",
-        iam:""
+        iam:"",
+        move:""
       },
       player2:{
         name:"",
         connection:"",
+        move:""
       },
       
-      history: {
-        userWins: 0,
-        onlineUser: 0,
+      registro: {
+        player1Wins: 0,
+        player2Wins: 0,
         empate:0,
-        ultimajugada:"none"
+        ultimaJugada:"",
       },
   
     },
@@ -50,9 +51,9 @@ const state = {
       
     },
   
-   init(){
-     let cs = this.getState()
-    
+   init(time:string){
+     const cs= this.getState()
+      cs.playBeggining=time
      
     if(!localStorage.game){
       this.setState(cs)
@@ -66,11 +67,6 @@ const state = {
   
     subscribe(cb: (any) => any) {
       this.listeners.push(cb);
-    },
-    setTime(time:string){
-      const cs= this.getState()
-      cs.playBeggining=time
-      this.setState(cs)   
     },
    setName(name:string){
     const cs= this.getState()
@@ -86,15 +82,94 @@ const state = {
    setPlayersOnline(connection:String,callback){
     const cs= this.getState()
      cs.player1.connection=connection
+     console.log("connection:"+connection);
+     
      this.setState(cs)   
      callback() 
+   },
+   setPlayerRename(){
+    const cs= this.getState()
+     cs.player1.connection=""
+     cs.player2.connection=""
+     this.setState(cs)   
+   },
+   setPlay(callback){
+    const cs= this.getState()
+     cs.player1.connection=""
+     cs.player2.connection=""
+     cs.player1.move=""
+     cs.player2.move=""
+     //cs.player2.iam==""
+     
+     this.setState(cs)   
+     callback()
    },
    setRoom(room:string){
     const cs = this.getState()
     cs.roomId=room
     this.setState(cs)
    },
+   setMove(move:Move,callback){
+    const cs = this.getState()
+    cs.player1.move=move
+    this.setState(cs)
+    callback()
+   },
+   
+   whoWins(player1:Move, player2: Move){
+    
+    const data = this.getState();
+   const playerlocal = [
+    player1==="piedra" && player2==="tijera",
+    player1==="papel" && player2==="piedra",
+    player1==="tijera" && player2==="papel"
+    ].includes(true);
+    const playeronline = [
+      player1==="piedra" && player2==="tijera",
+      player1==="papel" && player2==="piedra",
+      player1==="tijera" && player2==="papel"
+      ].includes(true);
+      const empate = [
+        player1==="piedra" && player2==="piedra",
+        player1==="papel" && player2==="papel",
+        player1==="tijera" && player2==="tijera"
+        ].includes(true)
+   
+      if(playerlocal){
+       return "gano el player1"
+      
+        
+      } if(playeronline){
+        return "gano el player2"
+     
+        
+      }  if(empate){
+        return "empate"
+    
+      } 
+      this.setState(data)
+  },
+ 
+  pushWhoWins(who:string){
+    console.log(who," VER SI NO SE BUGGEA");
+    const cs = this.getState()
 
+    if(who=="gano el player1"){
+      cs.registro.player1Wins=+ 1
+      cs.registro.ultimaJugada="gano el player1"
+    
+    } if(who=="gano el player2"){
+      cs.registro.player2Wins=+ 1
+      cs.registro.ultimaJugada="gano el player2"
+
+   
+      
+    }  if(who=="empate"){
+      cs.registro.empate=+ 1
+      cs.registro.ultimaJugada="empate"
+    } 
+    this.setState(cs)
+  },
 
 //sincronizacion con el back
    signUp(callback){
@@ -183,20 +258,22 @@ connectRtdb(callback){
 },
 listenToRoom(){ 
   const cs = this.getState()
- console.log("soy afuera ",cs.rtdbId);
  
     const referdata = ref(rtdb,"/rooms/"+cs.player1.rtdbId);
    
     onValue(referdata, (snapshot)=>{
      const dataDelServer = snapshot.val();
-    console.log(dataDelServer.player1,dataDelServer.player2);
     if(cs.player1.iam=="online"){
       cs.player2.name=dataDelServer.player1.name
       cs.player2.connection=dataDelServer.player1.connection
+      cs.player2.move=dataDelServer.player1.move
+
       this.setState(cs)
     }else if(cs.player1.iam=="local"){
       cs.player2.name=dataDelServer.player2.name
       cs.player2.connection=dataDelServer.player2.connection
+      cs.player2.move=dataDelServer.player2.move
+
       this.setState(cs)
 
     }
@@ -219,6 +296,7 @@ pushDataCreadorPartida(){
       })
   }
   )
+  this.listenToRoom()
 },
 pushDataOtroJugador(){
   const cs = this.getState()
@@ -232,6 +310,76 @@ pushDataOtroJugador(){
       body:JSON.stringify({
         name:cs.player1.name,
         connection:cs.player1.connection
+       
+      })
+  }
+  )
+  this.listenToRoom()
+},
+
+pushMoveCreadorPartida(){
+  const cs = this.getState()
+  const idRltdb =cs.player1.rtdbId
+  
+  fetch(API_BASE_URL+"/realtime/"+`${idRltdb}`,{
+      method:"post",
+      headers:{
+          "content-type":"application/json"
+      },
+      body:JSON.stringify(
+        {
+        move:cs.player1.move,
+
+      })
+  }
+  )
+},
+pushMoveOtroJugador(){
+  const cs = this.getState()
+  const idRltdb =cs.player1.rtdbId
+  
+  fetch(API_BASE_URL+"/realtime/ingreso/"+`${idRltdb}`,{
+      method:"post",
+      headers:{
+          "content-type":"application/json"
+      },
+      body:JSON.stringify({
+        move:cs.player1.move,
+       
+      })
+  }
+  )
+},eleminarRtdbDataPlayer1(){
+  const cs = this.getState()
+  const idRltdb =cs.player1.rtdbId
+  
+  fetch(API_BASE_URL+"/realtime/"+`${idRltdb}`,{
+      method:"post",
+      headers:{
+          "content-type":"application/json"
+      },
+      body:JSON.stringify({
+        connection:"",
+        move:"",
+
+       
+      })
+  }
+  )
+},
+eleminarRtdbDataPlayer2(){
+  const cs = this.getState()
+  const idRltdb =cs.player1.rtdbId
+  
+  fetch(API_BASE_URL+"/realtime/ingreso/"+`${idRltdb}`,{
+      method:"post",
+      headers:{
+          "content-type":"application/json"
+      },
+      body:JSON.stringify({
+        connection:"",
+        move:"",
+
        
       })
   }

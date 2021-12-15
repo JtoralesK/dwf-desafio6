@@ -1,1 +1,0 @@
-{"mappings":"AAAA,EACA,qBACA,CAEA,KAGA,sBAAA,CADA,QAEA","sources":["client/style.css"],"sourcesContent":["* {\r\n  box-sizing: border-box;\r\n}\r\n\r\nbody {\r\n \r\n  margin: 0;\r\n  background-color: azure;\r\n}\r\n"],"names":[],"version":3,"file":"index.00253124.css.map"}

@@ -5,10 +5,7 @@ import { cargarSegundo } from "../../components/temporizador/tempo";
  class Play extends HTMLElement{
      connectedCallback(){
      this.render()
-    
-     
     }
- 
  
     render(){
       const reloj = cargarSegundo({ seConcretaJugada: seConcretaJugada})
@@ -36,9 +33,6 @@ import { cargarSegundo } from "../../components/temporizador/tempo";
        const container = this.querySelector(".container__content__home");
        container.appendChild(reloj)
 
-
-
-
        
     const tijera:HTMLElement = this.querySelector(".buttonTijera");
     const piedra:HTMLElement = this.querySelector(".buttonPiedra");
@@ -57,31 +51,39 @@ import { cargarSegundo } from "../../components/temporizador/tempo";
       jugada.addEventListener("click",(e)=>{
         let evento:any = e
         let click = evento.path[2]
-       
-        let moveCpu=[]
-    
+       let jugada ;
         if(click==tijera){
           tijeraa.style.display="initial"
           piedra.style.display="none"
           papel.style.display="none"
           tijera.style.display="none"
-           moveCpu.push("tijera")
+          jugada="tijera"          
         }
         if(click==papel){
           papeel.style.display="initial"
           piedra.style.display="none"
           papel.style.display="none"
           tijera.style.display="none"
-              moveCpu.push("papel")
+          jugada="papel"          
+
         }
         if(click==piedra){
           piedraa.style.display="initial"
           piedra.style.display="none"
           papel.style.display="none"
           tijera.style.display="none"
-            moveCpu.push("piedra")
+          jugada="piedra"          
+
         }
-        state.setMove("userMove",moveCpu[0]);
+        state.setMove(jugada,()=>{
+          const cs = state.getState()
+          if(cs.player1.iam=="online"){
+            state.pushMoveOtroJugador()
+          }else if(cs.player1.iam=="local"){
+            state.pushMoveCreadorPartida()
+          }
+        })        
+
    })})
      style.innerHTML=`
          
@@ -105,25 +107,17 @@ import { cargarSegundo } from "../../components/temporizador/tempo";
     .manos {
       margin: 0 15px;
     }
-    
      
      `
      function seConcretaJugada(params){
-      if(params==1){
-        
-      
-        
+      if(params==1){ 
         setTimeout(()=>{
-          console.log("gholas");
-          
+          console.log("termino el tiempo");
           Router.go("/move")
         },1000)
-        
       }
       }
-    
      this.appendChild(style)
     }
-  
  }
  customElements.define("play-el",Play)
