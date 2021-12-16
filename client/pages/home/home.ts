@@ -34,10 +34,7 @@
     const cs = state.getState()
 
     if(cs.player1.name && cs.player2.name){
-      setTimeout(() => {
-        Router.go("/instrucciones")
-       }, 2000);
-     
+       Router.go("/instrucciones")
               
      
     }

@@ -5,8 +5,8 @@ type Move = "piedra" | "papel" | "tijera";
 type Wins = "gano el player1" |"gano el player2"|"empate"
 
  class Results extends HTMLElement{
-  player1Move:""
-  player2Move:""
+  player1Move:Move
+  player2Move:Move
   result:""
 
    connectedCallback(){
@@ -28,12 +28,7 @@ type Wins = "gano el player1" |"gano el player2"|"empate"
         const cs =state.getState()
         this.player1Move= cs.player1.move
         this.player2Move= cs.player2.move
-    //  state.subscribe(()=>{
-    //    console.log("suscribe pag results");
-    //    const cs =state.getState()
-    //   this.result=cs.registro.ultimaJugada
-    //   this.render()
-    //  })
+  
     }
     render(){
        const style = document.createElement("style")
@@ -41,10 +36,22 @@ type Wins = "gano el player1" |"gano el player2"|"empate"
       const perdiste = require("url:../../../img/estrella roja.png");
       const ganaste = require("url:../../../img/estrella verde.png");
       const cs= state.getState()
+      let move1;
+      let move2;
+      const iam = cs.player1.iam
+      if(iam=="local"){
+        this.player1Move=cs.player1.move
+        this.player2Move=cs.player2.move
+      }else if(iam=="online"){
+        this.player2Move=cs.player1.move
+        this.player1Move=cs.player2.move
+      }
+      console.log(this.player1Move, this.player2Move,"jugadas");
       
-      const juego =state.whoWins(cs.player1.move,cs.player2.move)
+      const juego =state.whoWins(this.player1Move, this.player2Move)
+      console.log(juego,"juego");
+      
       state.pushWhoWins(juego)
-    console.log(cs.player1.move,cs.player2.move,juego);
     
       
       let user = cs.registro.player1Wins;
@@ -53,46 +60,33 @@ type Wins = "gano el player1" |"gano el player2"|"empate"
 
       let tipoImg;
       let tipoColor;
-     if(cs.player1.iam=="local"){
-       console.log("result soy local");
-       
-      if(juego=="gano el player1"){
-        tipoImg=ganaste;
-        tipoColor="page-results-ganaste"
-       
-       }
-       if(juego== "gano el player2"){
-         tipoImg=perdiste
-         tipoColor="page-results-perdiste"
- 
-        }
-        if(juego=="empate"){
-         tipoImg=empate;
-         tipoColor="page-results-empate"
-         
-        }
-     }
-     if(cs.player1.iam=="online"){
-      console.log("result soy online");
+      console.log(cs.player1.iam,juego);
       
-     if(juego=="gano el player1"){
-       tipoImg=perdiste
-       tipoColor="page-results-perdiste"
+     if(cs.player1.iam=="local" && juego=="gano el player2" ){
+      tipoImg=perdiste
+      tipoColor="page-results-perdiste"
       
-      }
-      if(juego== "gano el player2"){
-        tipoImg=ganaste;
-        tipoColor="page-results-ganaste"
-
-       }
-       if(juego=="empate"){
+     } if(cs.player1.iam=="online" && juego=="gano el player1" ){
+      tipoImg=perdiste
+      tipoColor="page-results-perdiste"
+      
+     }if(cs.player1.iam=="local" && juego=="gano el player1" ){
+      tipoImg=ganaste
+      tipoColor="page-results-ganaste"
+      
+     } if(cs.player1.iam=="online" && juego=="gano el player2" ){
+      tipoImg=ganaste
+      tipoColor="page-results-ganaste"
+      
+     } if(juego=="empate"){
         tipoImg=empate;
         tipoColor="page-results-empate"
         
        }
-    }
+       console.log(tipoImg,tipoColor);
+       
     
-    console.log(tipoImg,tipoColor);
+    
     
        
       this.innerHTML=`
@@ -158,11 +152,11 @@ type Wins = "gano el player1" |"gano el player2"|"empate"
          color:red
        }
        .puntajeVos::before {
-         content: "Player:";
+         content: "${cs.player1.name}:";
          color:black;
        }
        .puntajeMaquina::before {
-         content: "Maquina:";
+         content: "${cs.player2.name}:";
          color:black;
        }
        .puntajeEmpate::before {

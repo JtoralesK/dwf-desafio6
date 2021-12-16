@@ -6,7 +6,6 @@ type Ready = string
 
 class Wait extends HTMLElement{
   room:Rooms=""
-  go:Ready
   player1Name:""
   player2Name:""
   player1Connection:""
@@ -15,24 +14,19 @@ class Wait extends HTMLElement{
 
     connectedCallback(){
       const cs =state.getState()      
-
      const firstName = cs.player1.name
      const room = cs.roomId
      this.room=room    
-
      this.player1Name=firstName
-     
+
      this.render()
-  
-    
       state.subscribe(()=>{
         console.log("suscribe pag waiting");
         const cs =state.getState()      
-        console.log(cs.player1.connection,cs.player2.connection);
+        console.log(cs.player1.connection+"player1",cs.player2.connection+"player2" , "a ver q ews el problema");
         
         this.player1Connection=cs.player1.connection
         this.player2Connection=cs.player2.connection
-
         this.render()
       })
      
@@ -41,14 +35,10 @@ class Wait extends HTMLElement{
    render(){
      const cs = state.getState()
      const juegoStart= cs.playBeggining
-
-     if(juegoStart==this.player1Connection && this.player2Connection==juegoStart){
-          
+     if(juegoStart==this.player1Connection && this.player2Connection==juegoStart){ 
       state.setPlayerRename()
      console.log("entre");
       
-      this.player1Connection=""
-      this.player2Connection=""
 
       Router.go("/play")
     }

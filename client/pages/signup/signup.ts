@@ -6,7 +6,7 @@ class Signup extends HTMLElement{
     this.render()
     const formm = document.querySelector(".form_signup")
     const button = document.querySelector(".button__home")
-  
+      
      formm.addEventListener('submit', function(e) {
       e.preventDefault();
       const target:any = e.target
@@ -15,11 +15,8 @@ class Signup extends HTMLElement{
       state.setName(name)
       if(cs.roomId==""){
         state.signUp(()=>{
-          console.log(name,"se ha registrado");
           state.createRoom(()=>{
-            console.log("room creado");
             state.connectRtdb(()=>{
-              "se ha conectado a la Realtime Data Base "
               state.IdentificadorPlater("local",()=>{
                 Router.go("/room")
               })
@@ -30,7 +27,6 @@ class Signup extends HTMLElement{
       
       }else{
         state.signUp(()=>{
-          console.log(name,"se ha registrado");
           state.connectRtdb(()=>{
             state.IdentificadorPlater("online",()=>{
                

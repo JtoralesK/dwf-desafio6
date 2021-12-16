@@ -89,7 +89,7 @@ const state = {
    },
    setPlayerRename(){
     const cs= this.getState()
-     cs.player1.connection=""
+     cs.playBeggining.connection=""
      cs.player2.connection=""
      this.setState(cs)   
    },
@@ -118,7 +118,6 @@ const state = {
    
    whoWins(player1:Move, player2: Move){
     
-    const data = this.getState();
    const playerlocal = [
     player1==="piedra" && player2==="tijera",
     player1==="papel" && player2==="piedra",
@@ -134,39 +133,39 @@ const state = {
         player1==="papel" && player2==="papel",
         player1==="tijera" && player2==="tijera"
         ].includes(true)
-   
+
+        const cs = this.getState();
+
       if(playerlocal){
        return "gano el player1"
-      
+       cs.registro.ultimaJugada="gano el player1"
+
         
       } if(playeronline){
         return "gano el player2"
-     
+        cs.registro.ultimaJugada="gano el player2"
+
         
       }  if(empate){
         return "empate"
-    
+        cs.registro.ultimaJugada="empate"
+
       } 
-      this.setState(data)
+      this.setState(cs)
   },
  
   pushWhoWins(who:string){
-    console.log(who," VER SI NO SE BUGGEA");
     const cs = this.getState()
+  console.log("maria gomez");
 
     if(who=="gano el player1"){
       cs.registro.player1Wins=+ 1
-      cs.registro.ultimaJugada="gano el player1"
     
     } if(who=="gano el player2"){
       cs.registro.player2Wins=+ 1
-      cs.registro.ultimaJugada="gano el player2"
-
-   
-      
+ 
     }  if(who=="empate"){
       cs.registro.empate=+ 1
-      cs.registro.ultimaJugada="empate"
     } 
     this.setState(cs)
   },
@@ -360,7 +359,7 @@ pushMoveOtroJugador(){
       },
       body:JSON.stringify({
         connection:"",
-        move:"",
+        move:""
 
        
       })
@@ -377,8 +376,8 @@ eleminarRtdbDataPlayer2(){
           "content-type":"application/json"
       },
       body:JSON.stringify({
-        connection:"",
-        move:"",
+       connection:"",
+        move:""
 
        
       })

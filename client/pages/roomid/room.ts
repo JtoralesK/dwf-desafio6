@@ -5,20 +5,23 @@ type Names =string
 
 class Room extends HTMLElement{
   room:Rooms=""
-  player1:Names[]=[]
-  player2:Names[]=[] 
+  player1:string
+  player2:string
 
     connectedCallback(){
-    this.render()
      const cs =state.getState()
      const room = cs.roomId
      const firstName = cs.player1.name
-     const secondName = cs.player2.name
-     this.player2=secondName
+     this.player2="player2"
      this.player1=firstName
-     
      this.room=room   
      this.render()
+
+    //  state.subscribe(()=>{
+    //    const cs = state.getState()
+    //    this.player2=cs.player2.name
+    //   this.render()
+    //  })
      
     }
    render(){

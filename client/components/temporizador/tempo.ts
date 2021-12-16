@@ -16,9 +16,9 @@ function cargarSegundo(paramrs){
     cargarSegundoo()
     function cargarSegundoo(){
         nInte = setInterval(pasaSegundo,1000)
-        divt.innerHTML=`3`  
+        divt.innerHTML=`5`  
     }
-    let segundos = 2;
+    let segundos = 4;
     
     function pasaSegundo(){
         divt.innerHTML=`${segundos}`
