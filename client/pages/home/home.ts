@@ -12,7 +12,6 @@
      const form = document.querySelector(".form")
 
 
-
      button1.addEventListener("click",(res)=>{
          Router.go("/signup")
         
@@ -35,7 +34,6 @@
 
     if(cs.player1.name && cs.player2.name){
        Router.go("/instrucciones")
-              
      
     }
     }

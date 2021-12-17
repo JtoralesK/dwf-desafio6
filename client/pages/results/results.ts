@@ -14,13 +14,9 @@ type Wins = "gano el player1" |"gano el player2"|"empate"
     const button = document.querySelector(".button")
     button.addEventListener("click",()=>{
       state.setPlay(()=>{
-        state.setPlay(()=>{
-          state.eleminarRtdbDataPlayer1()
-          state.eleminarRtdbDataPlayer2()
-
-          Router.go("/")
-
-  })
+        state.eleminarRtdbDataPlayer1()
+        state.eleminarRtdbDataPlayer2()
+        Router.go("/")
 
 })
 
@@ -44,11 +40,7 @@ type Wins = "gano el player1" |"gano el player2"|"empate"
           
         }
      
-     
-      console.log(this.player1Move, this.player2Move,"jugadas");
-      
       const juego =state.whoWins(this.player1Move, this.player2Move)
-      console.log(juego,"juego");
       
       state.pushWhoWins(juego)
     
@@ -59,7 +51,6 @@ type Wins = "gano el player1" |"gano el player2"|"empate"
 
       let tipoImg;
       let tipoColor;
-      console.log(cs.player1.iam,juego);
       
      if(cs.player1.iam=="local" && juego=="gano el player2" ){
       tipoImg=perdiste
@@ -82,12 +73,8 @@ type Wins = "gano el player1" |"gano el player2"|"empate"
         tipoColor="page-results-empate"
         
        }
-       console.log(tipoImg,tipoColor);
        
-    
-    
-    
-       
+  
       this.innerHTML=`
       <div class="${tipoColor}">
       <div class="container__results">

@@ -42,9 +42,6 @@ class Wait extends HTMLElement{
      const cs = state.getState()
      const juegoStart= cs.playBeggining
      if(juegoStart==this.player1Connection && this.player2Connection==juegoStart && cs.partida=="sin comenzar"){ 
-      const date = new Date()
-      const hora = date.toString().slice(16,18)
-     console.log("hora:",hora);
 
      setTimeout(() => {
       Router.go("/play")

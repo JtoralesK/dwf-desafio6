@@ -4,7 +4,6 @@ import { cargarSegundo } from "../../components/temporizador/tempo";
 
  class Play extends HTMLElement{
      connectedCallback(){
-       console.log("soy page play");
        
      this.render()
     }

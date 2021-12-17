@@ -4,9 +4,6 @@ import {state}from"../../state"
 
  class Instru extends HTMLElement{
      connectedCallback(){
-      const date = new Date()
-      const hora = date.toString().slice(16,21)
-       console.log("hola soy instrucciones",hora);
        
      this.render()
      const button = document.querySelector(".button__jugar")

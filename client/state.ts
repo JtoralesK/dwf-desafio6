@@ -151,18 +151,18 @@ const state = {
         const cs = this.getState();
 
       if(playerlocal){
+        cs.registro.ultimaJugada="gano el player1"
        return "gano el player1"
-       cs.registro.ultimaJugada="gano el player1"
 
         
       } if(playeronline){
-        return "gano el player2"
         cs.registro.ultimaJugada="gano el player2"
+        return "gano el player2"
 
         
       }  if(empate){
-        return "empate"
         cs.registro.ultimaJugada="empate"
+        return "empate"
 
       } 
       this.setState(cs)
