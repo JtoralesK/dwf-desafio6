@@ -4,6 +4,7 @@ import *as cors from"cors"
 import { nanoid } from "nanoid"
 
 const app = express()
+console.log("hola",process.env.NODE_ENV);
 
 app.use(cors())
 app.use(express.json())

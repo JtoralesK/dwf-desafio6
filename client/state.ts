@@ -5,7 +5,7 @@ type Connection = "online"|"offline"
 import { getDatabase, ref, onValue } from "firebase/database";
 import map from"lodash"
 import { rtdb } from "./rtdb";
-const API_BASE_URL = "http://localhost:3000"
+const API_BASE_URL= process.env.DB_HOST
 
 const state = {
     data: {
@@ -50,11 +50,13 @@ const state = {
       localStorage.setItem("game", JSON.stringify(newState));
     
      console.log("el state ha cambiado",state.getState());
-     
+
       
     },
   
    init(time:string){
+    console.log(2,process.env.DB_HOST);
+
      const cs= this.getState()
       cs.playBeggining=time
      
