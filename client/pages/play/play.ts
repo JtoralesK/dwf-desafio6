@@ -4,6 +4,8 @@ import { cargarSegundo } from "../../components/temporizador/tempo";
 
  class Play extends HTMLElement{
      connectedCallback(){
+       console.log("soy page play");
+       
      this.render()
     }
  
@@ -112,7 +114,7 @@ import { cargarSegundo } from "../../components/temporizador/tempo";
      function seConcretaJugada(params){
       if(params==1){ 
         setTimeout(()=>{
-          console.log("termino el tiempo");
+         // console.log("termino el tiempo");
           Router.go("/move")
         },1000)
       }

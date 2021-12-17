@@ -21,12 +21,18 @@ class Wait extends HTMLElement{
 
      this.render()
       state.subscribe(()=>{
-        console.log("suscribe pag waiting");
         const cs =state.getState()      
-        console.log(cs.player1.connection+"player1",cs.player2.connection+"player2" , "a ver q ews el problema");
+        const jugadas=[cs.player1,cs.player2]
         
-        this.player1Connection=cs.player1.connection
-        this.player2Connection=cs.player2.connection
+        jugadas.map((r)=>{
+          
+          if(r.iam=="local"){
+            this.player1Connection=r.connection
+          } if(r.iam=="online"){
+            this.player2Connection=r.connection
+          }
+        })
+      
         this.render()
       })
      
@@ -35,12 +41,18 @@ class Wait extends HTMLElement{
    render(){
      const cs = state.getState()
      const juegoStart= cs.playBeggining
-     if(juegoStart==this.player1Connection && this.player2Connection==juegoStart){ 
-      state.setPlayerRename()
-     console.log("entre");
-      
+     if(juegoStart==this.player1Connection && this.player2Connection==juegoStart && cs.partida=="sin comenzar"){ 
+      const date = new Date()
+      const hora = date.toString().slice(16,18)
+     console.log("hora:",hora);
 
+     setTimeout(() => {
       Router.go("/play")
+     }, 50);
+   
+      state.setPartida()
+
+      
     }
    
        const style = document.createElement("style")

@@ -36,16 +36,18 @@ type Wins = "gano el player1" |"gano el player2"|"empate"
       const perdiste = require("url:../../../img/estrella roja.png");
       const ganaste = require("url:../../../img/estrella verde.png");
       const cs= state.getState()
-      let move1;
-      let move2;
-      const iam = cs.player1.iam
-      if(iam=="local"){
-        this.player1Move=cs.player1.move
-        this.player2Move=cs.player2.move
-      }else if(iam=="online"){
-        this.player2Move=cs.player1.move
-        this.player1Move=cs.player2.move
-      }
+
+        if(cs.player1.iam=="local"){
+          this.player1Move=cs.player1.move
+          this.player2Move=cs.player2.move
+
+        } if(cs.player1.iam=="online"){
+          this.player2Move=cs.player1.move
+          this.player1Move=cs.player2.move
+          
+        }
+     
+     
       console.log(this.player1Move, this.player2Move,"jugadas");
       
       const juego =state.whoWins(this.player1Move, this.player2Move)

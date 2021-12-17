@@ -18,6 +18,7 @@ class Signup extends HTMLElement{
           state.createRoom(()=>{
             state.connectRtdb(()=>{
               state.IdentificadorPlater("local",()=>{
+                state.setPlayer2Online("online")
                 Router.go("/room")
               })
             })
@@ -29,7 +30,8 @@ class Signup extends HTMLElement{
         state.signUp(()=>{
           state.connectRtdb(()=>{
             state.IdentificadorPlater("online",()=>{
-               
+              state.setPlayer2Local("local")
+
               Router.go("/room")
             })
             })

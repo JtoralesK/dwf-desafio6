@@ -12,27 +12,33 @@ import {state}from"../../state"
      const button = document.querySelector(".button__jugar")
      button.addEventListener("click",(res)=>{
         const cs = state.getState()        
-        if(cs.player1.iam=="online"){
-          console.log("soy player online1");
-          
+        if(cs.player1.iam=="online" && cs.player2.iam=="local" ){
+
           const date = new Date()
           const hora = date.toString().slice(16,18)
-          state.setPlayersOnline(hora,()=>{            
-            state.pushDataOtroJugador()
+          state.setPlayersOnline(hora,()=>{      
+      
+            state.pushDataOtroJugador(()=>{
+              
+             Router.go("/wait")
+
+            })
           
             
-            Router.go("/wait")
           })
 
-        }else if(cs.player1.iam=="local"){
-          console.log("soy player local1");
-
+        } if(cs.player1.iam=="local"){
+          
           const date = new Date()
           const hora = date.toString().slice(16,18)
           state.setPlayersOnline(hora,()=>{
 
-            state.pushDataCreadorPartida()
-            Router.go("/wait")
+            state.pushDataCreadorPartida(()=>{
+
+             Router.go("/wait")
+
+
+            })
           })
 
         }

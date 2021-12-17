@@ -9,6 +9,7 @@ const API_BASE_URL = "http://localhost:3000"
 
 const state = {
     data: {
+      partida:"sin comenzar",
       roomId:"",
       playBeggining:"",
       player1:{
@@ -22,7 +23,9 @@ const state = {
       player2:{
         name:"",
         connection:"",
-        move:""
+        move:"",
+        iam:""
+
       },
       
       registro: {
@@ -73,6 +76,12 @@ const state = {
      cs.player1.name=name
      this.setState(cs)    
    },
+   setPartida(){
+    const cs= this.getState()
+     cs.partida="comenzo"
+     this.setState(cs)
+      
+   },
    IdentificadorPlater(iam:Player,callback){
     const cs= this.getState()
     cs.player1.iam=iam
@@ -81,17 +90,19 @@ const state = {
    },
    setPlayersOnline(connection:String,callback){
     const cs= this.getState()
-     cs.player1.connection=connection
-     console.log("connection:"+connection);
-     
+     cs.player1.connection=connection     
      this.setState(cs)   
      callback() 
    },
-   setPlayerRename(){
+   setPlayer2Local(iam:string){
     const cs= this.getState()
-     cs.playBeggining.connection=""
-     cs.player2.connection=""
-     this.setState(cs)   
+    cs.player2.iam=iam
+    this.setState(cs)   
+   },
+   setPlayer2Online(iam:string){
+    const cs= this.getState()
+    cs.player2.iam=iam
+    this.setState(cs)   
    },
    setPlay(callback){
     const cs= this.getState()
@@ -99,6 +110,7 @@ const state = {
      cs.player2.connection=""
      cs.player1.move=""
      cs.player2.move=""
+     cs.partida="sin comenzar"
      //cs.player2.iam==""
      
      this.setState(cs)   
@@ -156,7 +168,6 @@ const state = {
  
   pushWhoWins(who:string){
     const cs = this.getState()
-  console.log("maria gomez");
 
     if(who=="gano el player1"){
       cs.registro.player1Wins=+ 1
@@ -256,6 +267,8 @@ connectRtdb(callback){
   
 },
 listenToRoom(){ 
+  console.log("estoy escuchando rtdb");
+  
   const cs = this.getState()
  
     const referdata = ref(rtdb,"/rooms/"+cs.player1.rtdbId);
@@ -278,7 +291,9 @@ listenToRoom(){
     }
 })
 },
-pushDataCreadorPartida(){
+pushDataCreadorPartida(callback){
+  console.log("de local a online");
+
   const cs = this.getState()
   const idRltdb =cs.player1.rtdbId
   
@@ -296,8 +311,11 @@ pushDataCreadorPartida(){
   }
   )
   this.listenToRoom()
+  callback()
 },
-pushDataOtroJugador(){
+pushDataOtroJugador(callback){
+  console.log("de online a online");
+
   const cs = this.getState()
   const idRltdb =cs.player1.rtdbId
   
@@ -314,9 +332,11 @@ pushDataOtroJugador(){
   }
   )
   this.listenToRoom()
+  callback()
 },
 
 pushMoveCreadorPartida(){
+  
   const cs = this.getState()
   const idRltdb =cs.player1.rtdbId
   
@@ -334,6 +354,7 @@ pushMoveCreadorPartida(){
   )
 },
 pushMoveOtroJugador(){
+
   const cs = this.getState()
   const idRltdb =cs.player1.rtdbId
   
