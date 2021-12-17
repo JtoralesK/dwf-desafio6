@@ -12,11 +12,11 @@
             .button__home{
                margin-top:20px;
                width: 100%;
-                height:87px;
+                height:82px;
                 background-color:#006CFC;
                 border:solid 10px #043472;
                 color:white;
-                font-size:32px;
+                font-size:30px;
                 border-radius: 10px;
                 font-family: 'Odibee Sans', cursive;
               }

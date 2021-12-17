@@ -81,8 +81,8 @@
     .title_home {
       margin: 0;
       text-align: left;
-      padding-top: 40px;
-      font-size: 80px;
+      padding: 10px;
+      font-size: 65px;
       color: #009048;
       padding-right: 0px;
       font-family: "Arvo", serif;
@@ -108,7 +108,7 @@
       border: 10px solid blue;
       border-radius: 10px;
       text-align:center;
-      font-size:45px;
+      font-size:32px;
 
     }
     .button_home_ingreso{
@@ -121,6 +121,10 @@
        font-size:32px;
        border-radius: 10px;
        font-family: 'Odibee Sans', cursive;
+    }
+    .div_home{
+      width:93%;
+      margin:0 auto;
     }
      `
     

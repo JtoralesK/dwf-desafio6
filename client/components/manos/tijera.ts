@@ -49,7 +49,7 @@ export function initTijera(){
           
           @media (min-width: 678px) {
            .jugada{
-            height:180px;
+            height:100px;
             width:80px;
            }
           }

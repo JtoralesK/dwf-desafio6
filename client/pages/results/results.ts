@@ -25,9 +25,6 @@ type Wins = "gano el player1" |"gano el player2"|"empate"
 })
 
     })
-        const cs =state.getState()
-        this.player1Move= cs.player1.move
-        this.player2Move= cs.player2.move
   
     }
     render(){

@@ -42,8 +42,8 @@ export function initPiedra(){
           }
           @media (min-width: 678px) {
             .jugada{
-             height:180px;
-             width:80px;
+              height:100px;
+              width:80px;
             }
            }
            .elegida{
