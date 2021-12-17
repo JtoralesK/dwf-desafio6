@@ -5,8 +5,13 @@ type Move = "piedra" | "papel" | "tijera";
 type Wins = "gano el player1" |"gano el player2"|"empate"
 
  class Results extends HTMLElement{
+  player1Name:string
+  player2Name:string
   player1Move:Move
   player2Move:Move
+  player1Point:number
+  player2Point:number
+
   result:""
 
    connectedCallback(){
@@ -33,24 +38,29 @@ type Wins = "gano el player1" |"gano el player2"|"empate"
         if(cs.player1.iam=="local"){
           this.player1Move=cs.player1.move
           this.player2Move=cs.player2.move
+          this.player1Name=cs.player1.name
+          this.player2Name=cs.player2.name
 
         } if(cs.player1.iam=="online"){
           this.player2Move=cs.player1.move
           this.player1Move=cs.player2.move
+          this.player2Name=cs.player1.name
+          this.player1Name=cs.player2.name
+         
           
         }
      
       const juego =state.whoWins(this.player1Move, this.player2Move)
       
       state.pushWhoWins(juego)
+    console.log(juego);
     
       
-      let user = cs.registro.player1Wins;
-      let computer= cs.registro.player2Wins;
-      let empatejugada= cs.registro.empate;
+      
 
       let tipoImg;
       let tipoColor;
+      console.log( cs.registro);
       
      if(cs.player1.iam=="local" && juego=="gano el player2" ){
       tipoImg=perdiste
@@ -74,7 +84,7 @@ type Wins = "gano el player1" |"gano el player2"|"empate"
         
        }
        
-  
+      
       this.innerHTML=`
       <div class="${tipoColor}">
       <div class="container__results">
@@ -83,9 +93,9 @@ type Wins = "gano el player1" |"gano el player2"|"empate"
         </div>
         <div class="results-jugadas">
         <h2 class="score">Score</h2>
-        <h4 class="puntajeVos">${user}</h4>
-        <h4 class="puntajeMaquina">${computer}</h4>
-        <h4 class="puntajeEmpate">${empatejugada}</h4>
+        <h4 class="puntajeVos">${cs.registro.player1Wins}</h4>
+        <h4 class="puntajeMaquina">${cs.registro.player2Wins}</h4>
+        <h4 class="puntajeEmpate">${cs.registro.empate}</h4>
         </div>
         <button-el class="button">Volver a jugar</button-el>
         </div>
@@ -138,11 +148,11 @@ type Wins = "gano el player1" |"gano el player2"|"empate"
          color:red
        }
        .puntajeVos::before {
-         content: "${cs.player1.name}:";
+         content: "${ this.player1Name}:";
          color:black;
        }
        .puntajeMaquina::before {
-         content: "${cs.player2.name}:";
+         content: "${ this.player2Name}:";
          color:black;
        }
        .puntajeEmpate::before {

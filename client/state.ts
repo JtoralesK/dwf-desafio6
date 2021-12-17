@@ -49,7 +49,7 @@ const state = {
       }
       localStorage.setItem("game", JSON.stringify(newState));
     
-     console.log("el state ha cambiado",state.getState());
+     //console.log("el state ha cambiado",state.getState());
 
       
     },
