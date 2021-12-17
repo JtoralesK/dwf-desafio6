@@ -73,15 +73,15 @@ class Wait extends HTMLElement{
 
          <section>
          <div class="content">
+         <div class="circle">
+         <div class="loader"></div>
+          </div>  
          <h2 class="title-One_content">Esperando a que Paula presione ¡Jugar!...</h2>
 
          </div>
 
          </section>
         
-         
-        
-
          <div class="container__manos">
          <tijera-el class="tijera__home manos" ></tijera-el>
          <piedra-el class="piedra__home manos" ></piedra-el>
@@ -156,6 +156,26 @@ class Wait extends HTMLElement{
   .ready:hover{
     background-color: rgb(125, 175, 216);
   }
+  .circle{
+    text-align: right;
+    margin-left:45%
+
+  }
+    .loader {
+        border: 16px solid #f3f3f3; 
+        border-top: 16px solid rgb(189, 0, 0);; 
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        animation: spin 2s linear infinite;
+
+      }
+      
+      @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+    
     `
     
    

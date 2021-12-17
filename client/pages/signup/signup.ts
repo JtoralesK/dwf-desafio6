@@ -4,10 +4,12 @@ import {state} from"../../state"
 class Signup extends HTMLElement{
     connectedCallback(){
     this.render()
-    const formm = document.querySelector(".form_signup")
+    const buttonComenzar = document.querySelector(".form_signup")
     const button = document.querySelector(".button__home")
+    const circle:HTMLElement = document.querySelector(".circle")
       
-     formm.addEventListener('submit', function(e) {
+    buttonComenzar.addEventListener('submit', function(e) {
+      circle.style.display="initial"
       e.preventDefault();
       const target:any = e.target
       const name = target.name.value
@@ -53,10 +55,13 @@ class Signup extends HTMLElement{
       <div class="container__content__home">
       <h1 class="title__home">Piedra Papel o Tijera</h1>
      <div class="div_home">
+     <div class="circle">
+    <div class="loader"></div>
+     </div>  
      <form class="form_signup">
      <label >
          <p class="name_home">Tu nombre</p>
-         <input class="input_form" type="text" name="name">
+         <input class="input_form" type="text" name="name" required>
      </label>
      <button class="buttonRegistro">Comenzar</button>
      </form >
@@ -129,7 +134,24 @@ class Signup extends HTMLElement{
     width:93%;
     margin:0 auto;
   }
-   
+  .circle{
+    display: none;
+    text-align: right;
+  }
+    .loader {
+        border: 16px solid #f3f3f3; 
+        border-top: 16px solid rgb(189, 0, 0);; 
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        animation: spin 2s linear infinite;
+
+      }
+      
+      @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
     
     `
    
