@@ -10,8 +10,9 @@ const API_BASE_URL= process.env.DB_HOST
 const state = {
     data: {
       partida:"sin comenzar",
-      roomId:"",
       playBeggining:"",
+      roomId:"",
+      sesion:"desactivada",
       player1:{
         name:"",
         userId:"",
@@ -34,6 +35,9 @@ const state = {
         empate:0,
         ultimaJugada:"",
       },
+      error:{
+        usuario:"no existe"//error cuando ya existe un usuario con el mismo nombre
+      }
   
     },
     listeners: [],
@@ -49,7 +53,7 @@ const state = {
       }
       localStorage.setItem("game", JSON.stringify(newState));
     
-     //console.log("el state ha cambiado",state.getState());
+     console.log("el state ha cambiado",state.getState());
 
       
     },
@@ -81,6 +85,13 @@ const state = {
    setPartida(){
     const cs= this.getState()
      cs.partida="comenzo"
+     cs.sesion="activada"
+     this.setState(cs)
+      
+   },
+   setError(){
+    const cs= this.getState()
+     cs.error.usuario="no existe"
      this.setState(cs)
       
    },
@@ -197,9 +208,20 @@ const state = {
         }).then((res=>{
             return res.json()
         })).then(resp=>{
-          cs.player1.userId=resp.id
-           this.setState(cs)
-          callback()
+          console.log(resp);
+          if(resp.new==true){
+            cs.player1.userId=resp.id
+            this.setState(cs)
+           callback()
+            
+          }else if(resp.new==false){
+            console.log("ya existe el fucking usuario");
+            cs.error.usuario="ya existe"
+            this.setState(cs)
+            callback()
+
+          }
+          
             
         })
     }else{
@@ -246,11 +268,12 @@ createRoom(callback){
         cs.roomId=resp.id
          this.setState(cs)
         callback()
-          
+        
       })
   }else{
-      console.error("no hay un user id en el state")
+    console.error("no hay un user id en el state")
       callback(true)
+   
   }
 },
 connectRtdb(callback){
@@ -371,7 +394,7 @@ pushMoveOtroJugador(){
       })
   }
   )
-},eleminarRtdbDataPlayer1(){
+},eleminarRtdbDataPlayers(){
   const cs = this.getState()
   const idRltdb =cs.player1.rtdbId
   
@@ -388,25 +411,22 @@ pushMoveOtroJugador(){
       })
   }
   )
-},
-eleminarRtdbDataPlayer2(){
-  const cs = this.getState()
-  const idRltdb =cs.player1.rtdbId
-  
+   
   fetch(API_BASE_URL+"/realtime/ingreso/"+`${idRltdb}`,{
-      method:"post",
-      headers:{
-          "content-type":"application/json"
-      },
-      body:JSON.stringify({
-       connection:"",
-        move:""
+    method:"post",
+    headers:{
+        "content-type":"application/json"
+    },
+    body:JSON.stringify({
+     connection:"",
+      move:""
 
-       
-      })
-  }
-  )
+     
+    })
 }
+)
+}
+
   };
 
 

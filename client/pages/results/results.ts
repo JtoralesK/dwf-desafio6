@@ -19,8 +19,7 @@ type Wins = "gano el player1" |"gano el player2"|"empate"
     const button = document.querySelector(".button")
     button.addEventListener("click",()=>{
       state.setPlay(()=>{
-        state.eleminarRtdbDataPlayer1()
-        state.eleminarRtdbDataPlayer2()
+        state.eleminarRtdbDataPlayers()
         Router.go("/")
 
 })

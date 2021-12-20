@@ -30,7 +30,7 @@ app.post("/signup",(req,res)=>{
         })
       })
     }else{
-      res.status(404).json("user alredy exist")
+      res.status(404).json({new:false})
     }
   })
 

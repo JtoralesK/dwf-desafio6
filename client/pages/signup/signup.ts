@@ -17,14 +17,29 @@ class Signup extends HTMLElement{
       state.setName(name)
       if(cs.roomId==""){
         state.signUp(()=>{
-          state.createRoom(()=>{
-            state.connectRtdb(()=>{
-              state.IdentificadorPlater("local",()=>{
-                state.setPlayer2Online("online")
-                Router.go("/room")
-              })
-            })
-          })
+          console.log(cs.error.usuario);
+          if(cs.error.usuario=="no existe"){
+            state.createRoom(()=>{
+              state.connectRtdb(()=>{
+                state.IdentificadorPlater("local",()=>{
+                  state.setPlayer2Online("online")
+                  Router.go("/room")
+                })
+              })})
+            
+          }else if(cs.error.usuario=="ya existe"){
+            const nombre:HTMLElement = document.querySelector(".name_home")
+            const error_name:HTMLElement = document.querySelector(".error")
+            error_name.style.display="inherit"
+
+
+            circle.style.display="none"
+            nombre.style.color="red"
+            console.log("no paso");
+            state.setError()
+            
+          }
+         
           
         })
       
@@ -61,10 +76,12 @@ class Signup extends HTMLElement{
      <form class="form_signup">
      <label >
          <p class="name_home">Tu nombre</p>
-         <input class="input_form" type="text" name="name" required>
+         <input class="input_form" type="text" name="name" required  maxlength="8"> 
      </label>
      <button class="buttonRegistro">Comenzar</button>
      </form >
+     <p class="error">Ya hay registrado un usuario con ese nombre </p>
+
      </div>
       <div class="container__manos">
       <tijera-el class="tijera__home manos" ></tijera-el>
@@ -89,7 +106,7 @@ class Signup extends HTMLElement{
    .title__home {
      margin: 0;
      text-align: left;
-     padding: 10px;
+     padding: 10px 0 0 10px;
      font-size: 65px;
      color: #009048;
      padding-right: 0px;
@@ -113,6 +130,7 @@ class Signup extends HTMLElement{
        border-radius: 10px;
 
    }
+   
    .name_home{
        font-size:45px;
        text-align:center;
@@ -152,6 +170,15 @@ class Signup extends HTMLElement{
         0% { transform: rotate(0deg); }
         100% { transform: rotate(360deg); }
       }
+     
+      .error{
+        color:red;
+        font-size:16px;
+        text-align:center;
+        background-color:yellow;
+        display:none;
+      }
+      
     
     `
    
