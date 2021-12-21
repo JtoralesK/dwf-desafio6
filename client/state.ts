@@ -124,7 +124,6 @@ const state = {
      cs.player1.move=""
      cs.player2.move=""
      cs.partida="sin comenzar"
-     //cs.player2.iam==""
      
      this.setState(cs)   
      callback()
@@ -208,14 +207,12 @@ const state = {
         }).then((res=>{
             return res.json()
         })).then(resp=>{
-          console.log(resp);
           if(resp.new==true){
             cs.player1.userId=resp.id
             this.setState(cs)
            callback()
             
           }else if(resp.new==false){
-            console.log("ya existe el fucking usuario");
             cs.error.usuario="ya existe"
             this.setState(cs)
             callback()

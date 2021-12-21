@@ -9,6 +9,8 @@
      const button2:HTMLElement = document.querySelector(".button_home_ingresoSala")
      const button3:HTMLElement = document.querySelector(".button_home_ingreso")
      const input:HTMLElement = document.querySelector(".input_codigo_room")
+     const Retomarbutton4:HTMLElement = document.querySelector(".retomarPartida")
+
      const form = document.querySelector(".form")
 
 
@@ -34,9 +36,24 @@
 
     if(cs.player1.name && cs.player2.name){
        Router.go("/instrucciones")
-     
+      
+
     }
+    if(cs.localData.sesion=="activada"){
+      const localData =cs.localData
+      Retomarbutton4.style.display="grid"
+      Retomarbutton4.addEventListener("click",()=>{
+        state.setState(localData)
+        state.setPlay(()=>{
+          state.eleminarRtdbDataPlayers()
+          Router.go("/instrucciones")
+  
+  })})
+
+  }
+
     }
+    
  
  
     render(){
@@ -54,6 +71,9 @@
   <input type="text" class="input_codigo_room" name="room" placeholder="CODIGO" required>
   <button class="button_home_ingreso">Ingresar</button>
   </form>
+  <div class="retomarPartida">
+  <button class="retomar_button">Continuar Partida</button>
+  </div>
    </div>
     <div class="container_manos">
     <tijera-el class="tijera_home manos" ></tijera-el>
@@ -123,6 +143,21 @@
     .div_home{
       width:93%;
       margin:0 auto;
+    }
+    .retomarPartida{
+      justify-content: center;
+      align-items: center;
+      display:none;
+    }
+    .retomar_button{
+      width:100%;
+      background:yellow;
+      border:1px solid black;
+      margin-top:20px;
+      border-radius: 2px;
+      color:red;
+      text-align:center;
+
     }
      `
     
