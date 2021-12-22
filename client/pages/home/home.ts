@@ -36,7 +36,7 @@
 
     if(cs.player1.name && cs.player2.name){
        Router.go("/instrucciones")
-      
+      state.eleminarRtdbDataReady()
 
     }
     if(cs.localData.sesion=="activada"){
@@ -45,11 +45,14 @@
       Retomarbutton4.addEventListener("click",()=>{
         state.setState(localData)
         state.setPlay(()=>{
-          state.eleminarRtdbDataPlayers()
+         
           Router.go("/instrucciones")
   
   })})
 
+  }else{
+    console.log("no hay data todavi");
+    
   }
 
     }

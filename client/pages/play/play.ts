@@ -6,6 +6,7 @@ import { cargarSegundo } from "../../components/temporizador/tempo";
      connectedCallback(){
        
      this.render()
+
     }
  
     render(){

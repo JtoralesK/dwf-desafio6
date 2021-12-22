@@ -11,28 +11,71 @@ type Wins = "gano el player1" |"gano el player2"|"empate"
   player2Move:Move
   player1Point:number
   player2Point:number
+  player1Ready:boolean
+  player2Ready:boolean
 
   result:""
 
    connectedCallback(){
     this.render()
+    this.ready()
+     state.subscribe(()=>{
+       const cs =state.getState()   
+       if(cs.player2.iam=="local"){
+        this.player1Ready=cs.player2.ready
+
+      } if(cs.player2.iam=="online"){
+        this.player2Ready=cs.player2.ready
+
+
+      }
+       
+      this.ready()
+     })
+    
+     
     const button = document.querySelector(".button")
     button.addEventListener("click",()=>{
       state.setPlay(()=>{
+        const cs= state.getState()
+        const loader:HTMLElement = document.querySelector(".loader")
+        loader.style.display="grid"
         state.eleminarRtdbDataPlayers()
-        Router.go("/")
+        if(cs.player1.iam=="local"){
+          state.user1ready()
+          this.player1Ready=cs.player1.ready
 
-})
+        } if(cs.player1.iam=="online"){
+          state.user2ready()
+          this.player2Ready=cs.player1.ready
+
+
+        }
+        
+       })
 
     })
-  
+
+    }
+    ready(){
+      const cs= state.getState()
+      const ready1= cs.player1.ready
+      const ready2= cs.player2.ready
+
+      console.log(cs.player1.ready,"player1",cs.player2.ready,"player2");
+      if(ready1==true && ready2==true){
+        console.log("sin bugg");
+        
+        Router.go("/")
+      }
     }
     render(){
+      const cs= state.getState()
+
        const style = document.createElement("style")
       const empate = require("url:../../../img/estrella amarilla.png");
       const perdiste = require("url:../../../img/estrella roja.png");
       const ganaste = require("url:../../../img/estrella verde.png");
-      const cs= state.getState()
 
         if(cs.player1.iam=="local"){
           this.player1Move=cs.player1.move
@@ -50,9 +93,9 @@ type Wins = "gano el player1" |"gano el player2"|"empate"
         }
      
       const juego =state.whoWins(this.player1Move, this.player2Move)
-      
+      console.log(juego);
       state.pushWhoWins(juego)
-    console.log(juego);
+    
     
       
       
@@ -97,6 +140,9 @@ type Wins = "gano el player1" |"gano el player2"|"empate"
         <h4 class="puntajeEmpate">${cs.registro.empate}</h4>
         </div>
         <button-el class="button">Volver a jugar</button-el>
+        </div>
+        <div class="loader">
+        <div id="preloader_3"></div>
         </div>
        
      </div>
@@ -158,6 +204,53 @@ type Wins = "gano el player1" |"gano el player2"|"empate"
          content: "Empate:";
          color:black;
        }
+
+       .loader{
+         margin-top:20px;
+         margin-right:25px;
+         display:none;
+         justify-content: center;
+        align-items: center;
+       }
+
+
+
+       #preloader_3{
+        position:relative;
+    }
+    #preloader_3:before{
+        width:20px;
+        height:20px;
+        border-radius:20px;
+        background:green;
+        content:'';
+        position:absolute;
+        background:#9b59b6;
+        animation: preloader_3_before 1.5s infinite ease-in-out;
+    }
+     
+    #preloader_3:after{
+        width:20px;
+        height:20px;
+        border-radius:20px;
+        background:blue;
+        content:'';
+        position:absolute;
+        background:#2ecc71;
+        left:22px;
+        animation: preloader_3_after 1.5s infinite ease-in-out;
+    }
+     
+    @keyframes preloader_3_before {
+        0% {transform: translateX(0px) rotate(0deg)}
+        50% {transform: translateX(50px) scale(1.2) rotate(260deg); background:#2ecc71;border-radius:0px;}
+          100% {transform: translateX(0px) rotate(0deg)}
+    }
+    @keyframes preloader_3_after {
+        0% {transform: translateX(0px)}
+        50% {transform: translateX(-50px) scale(1.2) rotate(-260deg);background:#9b59b6;border-radius:0px;}
+        100% {transform: translateX(0px)}
+    }
        
       `
       

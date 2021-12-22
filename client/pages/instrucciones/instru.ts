@@ -16,8 +16,8 @@ import {state}from"../../state"
           state.setPlayersOnline(hora,()=>{      
       
             state.pushDataOtroJugador(()=>{
-              
-             Router.go("/wait")
+              Router.go("/wait")
+
 
             })
           
@@ -31,14 +31,14 @@ import {state}from"../../state"
           state.setPlayersOnline(hora,()=>{
 
             state.pushDataCreadorPartida(()=>{
-
-             Router.go("/wait")
-
+              Router.go("/wait")
 
             })
           })
 
         }
+            
+
         
      })
      

@@ -10,6 +10,8 @@ class Wait extends HTMLElement{
   player2Name:""
   player1Connection:""
   player2Connection:""
+  player1Point:number | 0
+  player2Point:number | 0
 
 
     connectedCallback(){
@@ -18,16 +20,27 @@ class Wait extends HTMLElement{
      const room = cs.roomId
      this.room=room    
      this.player1Name=firstName
+     if(cs.player1.iam=="local"){
+      this.player1Point=cs.registro.player1Wins 
+      this.player2Point=cs.registro.player2Wins 
+    }else if(cs.player1.iam=="online"){
+      this.player1Point=cs.registro.player2Wins 
+      this.player2Point=cs.registro.player1Wins 
+    }
+
 
      this.render()
       state.subscribe(()=>{
-        const cs =state.getState()      
+        const cs =state.getState()   
+        this.player2Name=cs.player2.name || "player2" 
+       
         const jugadas=[cs.player1,cs.player2]
         
         jugadas.map((r)=>{
           
           if(r.iam=="local"){
             this.player1Connection=r.connection
+            
           } if(r.iam=="online"){
             this.player2Connection=r.connection
           }
@@ -40,8 +53,10 @@ class Wait extends HTMLElement{
     }
    render(){
      const cs = state.getState()
+     
+
      const juegoStart= cs.playBeggining
-     if(juegoStart==this.player1Connection && this.player2Connection==juegoStart && cs.partida=="sin comenzar"){ 
+     if(juegoStart==this.player1Connection && this.player2Connection==juegoStart && cs.partida=="sin comenzar" ){ 
 
      setTimeout(() => {
       Router.go("/play")
@@ -60,8 +75,8 @@ class Wait extends HTMLElement{
              
          <div class="header">
         <div class="marcador">
-        <p class="userLocal p-header">${this.player1Name}:0</p>
-        <p class="userOnline  p-header">Rosa:0</p>
+        <p class="userLocal p-header">${this.player1Name}:${this.player1Point}</p>
+        <p class="userOnline  p-header">${this.player2Name}:${this.player2Point}</p>
 
         </div>
          <div class="sala">

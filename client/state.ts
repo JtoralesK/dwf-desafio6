@@ -19,13 +19,16 @@ const state = {
         rtdbId:"",
         connection:"",
         iam:"",
-        move:""
+        move:"",
+        ready:false
       },
       player2:{
         name:"",
         connection:"",
         move:"",
-        iam:""
+        iam:"",
+        ready:false
+
 
       },
       
@@ -119,10 +122,10 @@ const state = {
    },
    setPlay(callback){
     const cs= this.getState()
-     cs.player1.connection=""
-     cs.player2.connection=""
      cs.player1.move=""
      cs.player2.move=""
+     cs.player1.connection=""
+     cs.player2.connection=""
      cs.partida="sin comenzar"
      
      this.setState(cs)   
@@ -148,9 +151,9 @@ const state = {
     player1==="tijera" && player2==="papel"
     ].includes(true);
     const playeronline = [
-      player1==="piedra" && player2==="tijera",
-      player1==="papel" && player2==="piedra",
-      player1==="tijera" && player2==="papel"
+      player2==="piedra" && player1==="tijera",
+      player2==="papel" && player1==="piedra",
+      player2==="tijera" && player1==="papel"
       ].includes(true);
       const empate = [
         player1==="piedra" && player2==="piedra",
@@ -180,15 +183,16 @@ const state = {
  
   pushWhoWins(who:string){
     const cs = this.getState()
-
+    console.log(who,"suma");
+    
     if(who=="gano el player1"){
-      cs.registro.player1Wins=+ 1
+      cs.registro.player1Wins+= 1
     
     } if(who=="gano el player2"){
-      cs.registro.player2Wins=+ 1
+      cs.registro.player2Wins+= 1
  
     }  if(who=="empate"){
-      cs.registro.empate=+ 1
+      cs.registro.empate+= 1
     } 
     this.setState(cs)
   },
@@ -301,12 +305,16 @@ listenToRoom(){
       cs.player2.name=dataDelServer.player1.name
       cs.player2.connection=dataDelServer.player1.connection
       cs.player2.move=dataDelServer.player1.move
+      cs.player2.ready=dataDelServer.player1.ready
+
 
       this.setState(cs)
     }else if(cs.player1.iam=="local"){
       cs.player2.name=dataDelServer.player2.name
       cs.player2.connection=dataDelServer.player2.connection
       cs.player2.move=dataDelServer.player2.move
+      cs.player2.ready=dataDelServer.player2.ready
+
 
       this.setState(cs)
 
@@ -402,13 +410,13 @@ pushMoveOtroJugador(){
       },
       body:JSON.stringify({
         connection:"",
-        move:""
+        move:"",
+
 
        
       })
   }
   )
-   
   fetch(API_BASE_URL+"/realtime/ingreso/"+`${idRltdb}`,{
     method:"post",
     headers:{
@@ -416,13 +424,88 @@ pushMoveOtroJugador(){
     },
     body:JSON.stringify({
      connection:"",
-      move:""
+      move:"",
+
 
      
     })
-}
-)
-}
+})
+  
+},
+user1ready(){
+  const cs = this.getState()
+  const idRltdb =cs.player1.rtdbId
+  
+  fetch(API_BASE_URL+"/realtime/"+`${idRltdb}`,{
+      method:"post",
+      headers:{
+          "content-type":"application/json"
+      },
+      body:JSON.stringify({
+        ready:true
+
+      })
+  }
+  )
+ cs.player1.ready=true
+this.setState(cs)
+
+
+},
+user2ready(){
+  const cs = this.getState()
+  const idRltdb =cs.player1.rtdbId
+  
+  fetch(API_BASE_URL+"/realtime/ingreso/"+`${idRltdb}`,{
+    method:"post",
+    headers:{
+        "content-type":"application/json"
+    },
+    body:JSON.stringify({
+     connection:"",
+      move:"",
+      ready:true
+
+
+     
+    })
+})
+cs.player1.ready=true
+this.setState(cs)
+
+
+},eleminarRtdbDataReady(){
+  const cs = this.getState()
+  const idRltdb =cs.player1.rtdbId
+  
+  fetch(API_BASE_URL+"/realtime/"+`${idRltdb}`,{
+      method:"post",
+      headers:{
+          "content-type":"application/json"
+      },
+      body:JSON.stringify({
+        ready:false
+
+
+       
+      })
+  }
+  )
+  fetch(API_BASE_URL+"/realtime/ingreso/"+`${idRltdb}`,{
+    method:"post",
+    headers:{
+        "content-type":"application/json"
+    },
+    body:JSON.stringify({
+      ready:false
+
+     
+    })
+})
+cs.player1.ready=false
+cs.player2.ready=false
+this.setState(cs)
+},
 
   };
 

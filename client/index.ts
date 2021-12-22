@@ -19,8 +19,6 @@ import { initPiedra } from "./components/manos/piedra";
     const tiempo = new Date()    
     const hora = tiempo.toString().slice(16,18)
     state.init(hora)
-    const cs = state.getState()
-    console.log(cs.localData,"lcoal");
    
     initText()
     initTijera()

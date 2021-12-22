@@ -66,13 +66,16 @@ app.post("/rooms", (req, res) => {
       player1:{
         name:"",
         connection:"",
-        move:""
+        move:"",
+        ready:false
 
       },
       player2:{
         name:"",
         connection:"",
-        move:""
+        move:"",
+        ready:false
+
 
 
       }
