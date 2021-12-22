@@ -91,7 +91,7 @@ class Wait extends HTMLElement{
          <div class="circle">
          <div class="loader"></div>
           </div>  
-         <h2 class="title-One_content">Esperando a que Paula presione ¡Jugar!...</h2>
+         <h2 class="title-One_content">Esperando a que ${ this.player2Name} presione ¡Jugar!...</h2>
 
          </div>
 

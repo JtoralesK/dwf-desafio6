@@ -53,6 +53,8 @@
             const hora = tiempo.toString().slice(16,18)
             state.setHora(hora)
             state.eleminarRtdbDataPlayers()
+            state.eleminarRtdbDataReady()
+
             Router.go("/instrucciones")
     
     })})
