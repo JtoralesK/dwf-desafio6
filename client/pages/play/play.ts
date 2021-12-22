@@ -115,6 +115,9 @@ import { cargarSegundo } from "../../components/temporizador/tempo";
       if(params==1){ 
         setTimeout(()=>{
          // console.log("termino el tiempo");
+        //  const cs = state.getState()
+        //  console.log(cs.player1.move,cs);
+         
           Router.go("/move")
         },1000)
       }

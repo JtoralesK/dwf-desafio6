@@ -62,7 +62,6 @@ const state = {
     },
   
    init(time:string){
-    console.log(2,process.env.DB_HOST);
 
      const cs= this.getState()
       cs.playBeggining=time
@@ -75,6 +74,11 @@ const state = {
       this.setState({...cs,localData}) 
     }
    
+   },
+   setHora(time:string){
+    const cs= this.getState()
+    cs.playBeggining=time
+    this.setState(cs) 
    },
   
     subscribe(cb: (any) => any) {

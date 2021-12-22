@@ -45,7 +45,10 @@
       Retomarbutton4.addEventListener("click",()=>{
         state.setState(localData)
         state.setPlay(()=>{
-         
+          const tiempo = new Date()    
+          const hora = tiempo.toString().slice(16,18)
+          state.setHora(hora)
+          state.eleminarRtdbDataPlayers()
           Router.go("/instrucciones")
   
   })})
