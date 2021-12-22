@@ -39,24 +39,29 @@
       state.eleminarRtdbDataReady()
 
     }
-    if(cs.localData.sesion=="activada"){
-      const localData =cs.localData
-      Retomarbutton4.style.display="grid"
-      Retomarbutton4.addEventListener("click",()=>{
-        state.setState(localData)
-        state.setPlay(()=>{
-          const tiempo = new Date()    
-          const hora = tiempo.toString().slice(16,18)
-          state.setHora(hora)
-          state.eleminarRtdbDataPlayers()
-          Router.go("/instrucciones")
-  
-  })})
+    if(cs.localData){
+      const sesion:any=cs.localData.sesion || "desactivada"
 
-  }else{
-    console.log("no hay data todavi");
+      if(sesion=="activada"){
+        
+        const localData =cs.localData
+        Retomarbutton4.style.display="grid"
+        Retomarbutton4.addEventListener("click",()=>{
+          state.setState(localData)
+          state.setPlay(()=>{
+            const tiempo = new Date()    
+            const hora = tiempo.toString().slice(16,18)
+            state.setHora(hora)
+            state.eleminarRtdbDataPlayers()
+            Router.go("/instrucciones")
     
-  }
+    })})
+  
+    }else{
+      console.log("no hay data todavi");
+      }
+    }
+    
 
     }
     

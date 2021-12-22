@@ -1,6 +1,7 @@
 import {state}from"../../state"
 import {Router} from"@vaadin/router"
 import { cargarSegundo } from "../../components/temporizador/tempo";
+type Move = "piedra" | "papel" | "tijera";
 
  class Play extends HTMLElement{
      connectedCallback(){
@@ -115,10 +116,26 @@ import { cargarSegundo } from "../../components/temporizador/tempo";
       if(params==1){ 
         setTimeout(()=>{
          // console.log("termino el tiempo");
-        //  const cs = state.getState()
-        //  console.log(cs.player1.move,cs);
-         
+          const cs = state.getState()
+          const move1:Move=cs.player1.move
+          const move2:Move=cs.player2.move
+
+         if(move1 && move2){
+          console.log(cs.player1.move,cs.player2.move,"paso jeje")
           Router.go("/move")
+         }else{
+          
+          state.setPlay(()=>{
+            state.eleminarRtdbDataPlayers()
+            console.log("no paso");
+            Router.go("/instrucciones")
+
+          })
+
+          
+
+         }
+         
         },1000)
       }
       }
