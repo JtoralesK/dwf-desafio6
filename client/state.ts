@@ -39,7 +39,9 @@ const state = {
         ultimaJugada:"",
       },
       error:{
-        usuario:"no existe"//error cuando ya existe un usuario con el mismo nombre
+        usuario:"no existe",//error cuando ya existe un usuario con el mismo nombre
+        sala:"",//error cuando se quiere entrar a una sala donde ya hay dos jugadores
+        datosErroneos:false
       }
   
     },
@@ -100,6 +102,17 @@ const state = {
     const cs= this.getState()
      cs.error.usuario="no existe"
      this.setState(cs)
+      
+   },
+   
+   setErrorRoom(callback){
+    const cs= this.getState()
+     cs.error.datosErroneos=false
+     cs.player1.name=""
+     cs.player1.userId=""
+     cs.roomId=""
+     this.setState(cs)
+     callback()
       
    },
    IdentificadorPlater(iam:Player,callback){
@@ -187,7 +200,6 @@ const state = {
  
   pushWhoWins(who:string){
     const cs = this.getState()
-    console.log(who,"suma");
     
     if(who=="gano el player1"){
       cs.registro.player1Wins+= 1
@@ -234,29 +246,6 @@ const state = {
         callback(true)
     }
 },
-auth(callback){
-  const cs = this.getState();
- 
-  if(cs.player1.name){
-      fetch(API_BASE_URL +"/auth",{
-          method:"post",
-          headers:{
-              "content-type":"application/json"
-          },
-          body:JSON.stringify({nombre:cs.player1.name})
-      }).then((res=>{
-          return res.json()
-      })).then(resp=>{
-        cs.player1.userId=resp.id
-         this.setState(cs)
-        callback()
-          
-      })
-  }else{
-      console.error("no hay un nombre en el state")
-      callback(true)
-  }
-},
 createRoom(callback){
   const cs = this.getState();
  
@@ -289,11 +278,64 @@ connectRtdb(callback){
       }).then((res=>{
           return res.json()
       })).then(resp=>{
+        
         cs.player1.rtdbId=resp.rtdbID
          this.setState(cs)
         callback()
           
       })
+  
+},
+verificarRoom(callback){
+  
+  const cs = this.getState();
+ 
+      fetch(API_BASE_URL +"/rooms/player2",{
+        method:"post",
+          headers:{
+              "content-type":"application/json"
+          },
+          body:JSON.stringify({
+            roomId:cs.roomId
+          })
+      }).then((data)=>{return data.json()}).then((respuesta)=>{
+        if(respuesta.error==false){
+          cs.error.sala=respuesta.sala
+          this.setState(cs)
+          callback() 
+        }else{
+          cs.error.datosErroneos=respuesta.error
+          this.setState(cs)
+          callback() 
+        }
+         
+        
+        }
+      )
+
+  
+},
+comunicarFirabaseP2(callback){
+  
+  const cs = this.getState();
+ 
+      fetch(API_BASE_URL +"/rooms/signup",{
+        method:"post",
+          headers:{
+              "content-type":"application/json"
+          },
+          body:JSON.stringify({
+            roomId:cs.roomId,
+            userId:cs.player1.userId
+          })
+      }).then((data)=>{return data.json()}).then((respuesta)=>{
+        cs.error.sala=respuesta.sala
+          this.setState(cs)
+          callback() 
+        
+        }
+      )
+
   
 },
 listenToRoom(){ 
@@ -326,7 +368,6 @@ listenToRoom(){
 })
 },
 pushDataCreadorPartida(callback){
-  console.log("de local a online");
 
   const cs = this.getState()
   const idRltdb =cs.player1.rtdbId
@@ -348,7 +389,6 @@ pushDataCreadorPartida(callback){
   callback()
 },
 pushDataOtroJugador(callback){
-  console.log("de online a online");
 
   const cs = this.getState()
   const idRltdb =cs.player1.rtdbId

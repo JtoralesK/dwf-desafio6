@@ -6,9 +6,10 @@ import { nanoid } from "nanoid"
 const app = express()
 console.log("hola",process.env.NODE_ENV);
 
+const path = require('path')
 app.use(cors())
 app.use(express.json())
-app.use(express.static("dist"))
+app.use('/static', express.static(path.join(__dirname, 'dist')))
 
 const port = process.env.PORT || 3000
 
@@ -36,31 +37,51 @@ app.post("/signup",(req,res)=>{
 
   
 })
-app.post("/auth",(req,res)=>{
- 
-  const nombre = req.body.nombre
-  
-  userCollection.where("nombre","==",nombre).get().then((resName)=>{
-    if(resName.empty){
-      res.status(404).json({
-        message:"user not found"
-      })
-    }else{
-      res.json({
-        Id:resName.docs[0].id
-      })
+
+app.post("/rooms/player2",(req,res)=>{
+  const {roomId}= req.body
+const ruta = roomsCollection.doc(roomId.toString())
+ruta.get().then((snap)=>{
+  if(snap.exists){
+    const data = snap.data()
+    if(data.sala=="completa"){      
+      res.json({error:false,sala:data.sala})
+    }else {      
+      res.json({error:false,sala:data.sala})
     }
-  })
-
-  
+  }else{ res.json({error:true})}
+ 
 })
-
+ 
+})
+app.post("/rooms/signup",(req,res)=>{
+  const {userId} = req.body 
+  const {roomId}= req.body
+const ruta = roomsCollection.doc(roomId.toString())
+ruta.get().then((snap)=>{
+    const data = snap.data()
+    if(data.sala=="completa"){      
+      res.json(data)
+    }else if(data.sala=="vacia"){      
+      ruta.update({
+        player2:userId,
+        sala:"completa"
+      })
+      res.json(data)
+  
+    }
+ 
+})
+ 
+})
 
 app.post("/rooms", (req, res) => {
   const {userId} = req.body
+ 
   const roomRef=  rtdb.ref("rooms/"+ nanoid())
   userCollection.doc(userId.toString()).get().then(snap=>{
     if(snap.exists){
+  
      roomRef.set({
       owner:userId,
       player1:{
@@ -79,11 +100,15 @@ app.post("/rooms", (req, res) => {
 
 
       }
+      
     }).then(respuesta=>{
      const lognId=roomRef.key
    const shortID = Math.floor(10000+Math.random() * 9999)
    roomsCollection.doc(shortID.toString()).set({
-       rtdbID:lognId
+       rtdbID:lognId,
+       player1:userId,
+       sala:"vacia"
+
      }).then(()=>{
        res.json({
          id:shortID.toString()
@@ -105,19 +130,15 @@ app.post("/rooms", (req, res) => {
   const {userId}= req.query
   const {roomId}= req.params
 
-
   userCollection.doc(userId.toString()).get().then(snap=>{
     if(snap.exists){
+  
     roomsCollection.doc(roomId).get().then((snapp)=>{
       const data = snapp.data()
-      console.log(data);
-      
       res.json(data)
     })
     }else{
-      res.status(401).json({
-        message:"no existis "
-      })
+      res.status(401).json({error:true})
     }
   })
  

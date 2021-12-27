@@ -7,7 +7,7 @@ class Signup extends HTMLElement{
     const buttonComenzar = document.querySelector(".form_signup")
     const button = document.querySelector(".button__home")
     const circle:HTMLElement = document.querySelector(".circle")
-      
+    
     buttonComenzar.addEventListener('submit', function(e) {
       circle.style.display="initial"
       e.preventDefault();
@@ -17,14 +17,11 @@ class Signup extends HTMLElement{
       state.setName(name)
       if(cs.roomId==""){
         state.signUp(()=>{
-          console.log(cs.error.usuario);
           if(cs.error.usuario=="no existe"){
             state.createRoom(()=>{
               state.connectRtdb(()=>{
                 state.IdentificadorPlater("local",()=>{
                   state.setPlayer2Online("online")
-                
-
                   Router.go("/room")
                 })
               })})
@@ -46,17 +43,72 @@ class Signup extends HTMLElement{
         })
       
       }else{
-        state.signUp(()=>{
-          state.connectRtdb(()=>{
-            state.IdentificadorPlater("online",()=>{
-              state.setPlayer2Local("local")
-           
-              Router.go("/room")
-            })
-            })
+           state.verificarRoom(()=>{
+
+            if(cs.error.datosErroneos==true){
+              const roomErroneo:HTMLElement = document.querySelector(".salaError")
+              roomErroneo.style.display="inherit"
+              circle.style.display="none"
+
+              console.error("datos erroneos")
+              state.setErrorRoom(()=>{
+                setTimeout(() => {
+                  Router.go("/")
+                 }, 2000);
+              })
+             
+            }else{
+                if(cs.error.sala=="vacia"){
+                  state.signUp(()=>{
+                    console.log(cs.error.usuario);
+                    if(cs.error.usuario=="no existe"){
+                      state.comunicarFirabaseP2(()=>{
+                        state.connectRtdb(()=>{
+                          state.IdentificadorPlater("online",()=>{
+                            state.setPlayer2Local("local")
+                            Router.go("/room")
+                          }) })
+                      
+                      })
+         
+                      
+                    }else if(cs.error.usuario=="ya existe"){
+                      const nombre:HTMLElement = document.querySelector(".name_home")
+                      const error_name:HTMLElement = document.querySelector(".error")
+                      error_name.style.display="inherit"
           
           
-        })
+                      circle.style.display="none"
+                      nombre.style.color="red"
+                      console.log("no paso");
+                      state.setError()
+                      
+                    }
+                   
+                  })
+
+                 
+                }else{
+                  const form:HTMLElement = document.querySelector(".form_signup")
+                  const div:HTMLElement = document.querySelector(".salaCompleta")
+                  circle.style.display="none"
+
+                  form.style.display="none"
+                  div.style.display="initial"
+                  console.error("paso algo")
+                  setTimeout(() => {
+                    Router.go("/")
+                   }, 2000);
+                }
+              
+
+             
+
+            }  
+           })
+       
+        
+      
       }
      
       
@@ -75,6 +127,10 @@ class Signup extends HTMLElement{
      <div class="circle">
     <div class="loader"></div>
      </div>  
+     <div class="salaCompleta">
+     <p class="salaCompletaP parpadea text">¡La partida ya ha comenzado!</p>
+
+     </div>
      <form class="form_signup">
      <label >
          <p class="name_home">Tu nombre</p>
@@ -83,7 +139,9 @@ class Signup extends HTMLElement{
      <button class="buttonRegistro">Comenzar</button>
      </form >
      <p class="error">Ya hay registrado un usuario con ese nombre </p>
-
+    <div class="salaError">
+    <p class="salaErrorP parpadea text" >¡ROOM ERRONEO!</p>
+    </div>
      </div>
       <div class="container__manos">
       <tijera-el class="tijera__home manos" ></tijera-el>
@@ -180,8 +238,65 @@ class Signup extends HTMLElement{
         background-color:yellow;
         display:none;
       }
+      .salaCompleta{
+        display:none;
+
+      }
+      .salaCompletaP{
+        margin-top:100px;
+        font-weight:700;
+        color:red;
+        text-align:center;
+      }
       
+      .salaError{
+        display:none;
+
+      }
+      .salaErrorP{
+        font-size:24px;
+        text-align:center;
+      }
     
+
+      .text {
+        font-size:28px;
+        font-family:helvetica;
+        font-weight:bold;
+        color:red;
+        text-transform:uppercase;
+      }
+      .parpadea {
+        
+        animation-name: parpadeo;
+        animation-duration: 0.4s;
+        animation-timing-function: linear;
+        animation-iteration-count: infinite;
+      
+        -webkit-animation-name:parpadeo;
+        -webkit-animation-duration: 1s;
+        -webkit-animation-timing-function: linear;
+        -webkit-animation-iteration-count: infinite;
+      }
+      
+      @-moz-keyframes parpadeo{  
+        0% { opacity: 1.0; }
+        50% { opacity: 0.0; }
+        100% { opacity: 1.0; }
+      }
+      
+      @-webkit-keyframes parpadeo {  
+        0% { opacity: 1.0; }
+        50% { opacity: 0.0; }
+         100% { opacity: 1.0; }
+      }
+      
+      @keyframes parpadeo {  
+        0% { opacity: 1.0; }
+         50% { opacity: 0.0; }
+        100% { opacity: 1.0; }
+      }
+   
     `
    
     this.appendChild(style)
