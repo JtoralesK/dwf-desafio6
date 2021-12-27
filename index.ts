@@ -6,11 +6,10 @@ import { nanoid } from "nanoid"
 const app = express()
 console.log("hola",process.env.NODE_ENV);
 
-const path = require('path')
 app.use(cors())
 app.use(express.json())
-app.use('/static', express.static(path.join(__dirname, 'dist')))
-
+const path = require('path');
+app.use(express.static(path.join(__dirname, 'dist')));
 const port = process.env.PORT || 3000
 
 const userCollection = firestore.collection("users") //collection de firebase =>USERS
