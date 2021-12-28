@@ -2,18 +2,24 @@ import *as express from "express"
 import {firestore,rtdb} from"./db"
 import *as cors from"cors"
 import { nanoid } from "nanoid"
-
+import * as path from "path"
 const app = express()
 console.log("hola",process.env.NODE_ENV);
-
 app.use(cors())
 app.use(express.json())
-const path = require('path');
-app.use(express.static(path.join(__dirname, 'dist')));
+app.use(express.static("dist"));
+const rutaRelativa = path.resolve(__dirname, "./dist/index.html");
+console.log(rutaRelativa);
+
 const port = process.env.PORT || 3000
 
 const userCollection = firestore.collection("users") //collection de firebase =>USERS
 const roomsCollection = firestore.collection("rooms") //collection de firebase =>Rooms
+
+app.get("*", (req, res) => {
+  res.sendFile(rutaRelativa);
+});
+
 
 app.post("/signup",(req,res)=>{
  
