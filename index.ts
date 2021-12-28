@@ -16,9 +16,7 @@ const port = process.env.PORT || 3000
 const userCollection = firestore.collection("users") //collection de firebase =>USERS
 const roomsCollection = firestore.collection("rooms") //collection de firebase =>Rooms
 
-app.get("*", (req, res) => {
-  res.sendFile(rutaRelativa);
-});
+
 
 
 app.post("/signup",(req,res)=>{
@@ -170,7 +168,9 @@ app.post('/realtime/:id', (req, res) => {
     })
 
 
-
+    app.get("*", (req, res) => {
+      res.sendFile(rutaRelativa);
+    });
 
 
 
